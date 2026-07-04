@@ -1,4 +1,6 @@
-﻿namespace SpaceExpedition
+﻿using System.Text;
+
+namespace SpaceExpedition
 {
     public class Artifact
     {
@@ -21,13 +23,20 @@
             Description = description;
         }
 
-        // TODO: Change type to Artifact
-        public static void ParseArtifact(string rawLine)
+        public static Artifact ParseArtifact(string rawLine)
         {
-            // 1. Split each line into 5 parts using comma delimeter
-            // 2. Extract the encoded name string
-            // 3. Call a recursice decoder to get decoded name
-            // 4. Return a new Artifact insatnce
+            // Split each line into 5 parts using comma delimeter
+            string[] artifactInfo = rawLine.Split(",", 5);
+            string encodedName = artifactInfo[0];
+            string decodedName = DecodedWord(encodedName);
+
+            return new Artifact(encodedName, decodedName, artifactInfo[1], artifactInfo[2], artifactInfo[3], artifactInfo[4]);
+        }
+
+        private static string DecodedWord(string encodedName)
+        {
+            // 3. Call a recursive decoder to get decoded name
+            return "";
         }
 
         private static char DecodeCharacter(char encodedChar, int level)
