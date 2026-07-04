@@ -41,6 +41,14 @@
                     break;
                 }
             }
+
+            // Base case
+            if (level == 1)
+            {
+                return originalArray[originalArray.Length - (targetIndex + 1)];
+            }
+
+            return DecodeCharacter(mappedArray[targetIndex], level - 1);
         }
     }
 }
