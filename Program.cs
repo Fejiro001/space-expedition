@@ -60,9 +60,9 @@
                         AddArtifact(ref artifactCount, ref inventory);
                         break;
                     case 4:
-                        // Call file writer
+                        SaveToFile("../../../expedition_summary.txt", artifactCount, inventory);
                         running = false;
-                        Console.WriteLine("Exiting and saving data... Safe travels, exploorer!");
+                        Console.WriteLine("Exiting and saving data... Safe travels, explorer!");
                         break;
                     default:
                         Console.WriteLine("Invalid option. Try again.");
@@ -99,8 +99,12 @@
                         {
                             ResizeInventory(ref inventory);
                         }
-                        inventory[artifactCount] = Artifact.ParseArtifact(line);
-                        artifactCount++;
+                        Artifact parsed = Artifact.ParseArtifact(line);
+                        if (parsed != null)
+                        {
+                            inventory[artifactCount] = parsed;
+                            artifactCount++;
+                        }
                     }
                 }
             }
@@ -252,15 +256,22 @@
 
         static void SaveToFile(string outputFile, int artifactCount, Artifact[] inventory)
         {
-            using (StreamWriter sw = new StreamWriter(outputFile))
+            try
             {
-                for (int i = 0; i < artifactCount; i++)
+                using (StreamWriter sw = new StreamWriter(outputFile))
                 {
-                    sw.WriteLine(inventory[i]);
-                    sw.WriteLine(",");
+                    for (int i = 0; i < artifactCount; i++)
+                    {
+                        sw.WriteLine($"{inventory[i].EncodedName},{inventory[i].Planet},{inventory[i].DiscoveryDate},{inventory[i].StorageLocation},{inventory[i].Description}");
+                    }
                 }
             }
-            Console.WriteLine($"[SUCCESS] Artifacts successfully exported to {outputFile}");
+            catch (Exception e)
+            {
+                Console.WriteLine("The file could not be saved.");
+                Console.WriteLine(e.Message);
+            }
+            Console.WriteLine("[SUCCESS] Artifacts successfully exported.");
         }
     }
 }
