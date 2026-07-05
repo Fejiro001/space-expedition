@@ -4,17 +4,18 @@
     {
         static void Main(string[] args)
         {
+            StartExpedition();
+        }
+
+        static void StartExpedition()
+        {
             Artifact[] inventory = new Artifact[5];
             int artifactCount = 0;
             string vaultFile = "../../../galactic_vault.txt";
 
             Console.WriteLine("--- GALACTIC INVENTORY SYSTEM INITIALIZED ---");
 
-            StartExpedition(vaultFile, ref artifactCount, ref inventory);
-        }
-
-        static void StartExpedition(string vaultFile, ref int artifactCount, ref Artifact[] inventory)
-        {
+            // Load and sort initial data
             ReadFile(vaultFile, ref artifactCount, ref inventory);
             SortInventory(ref artifactCount, ref inventory);
 
@@ -152,7 +153,11 @@
             }
             else
             {
-                Console.WriteLine($"| {inventory[index].DecodedName,-20} | {inventory[index].Planet,-15} | {inventory[index].DiscoveryDate,-15} | {inventory[index].StorageLocation,-15} | {inventory[index].Description}");
+                Console.WriteLine($"\n{"DECODED NAME:",-18} {inventory[index].DecodedName}\n" +
+                                  $"{"PLANET:",-18} {inventory[index].Planet}\n" +
+                                  $"{"DISCOVERY DATE:",-18} {inventory[index].DiscoveryDate}\n" +
+                                  $"{"LOCATION:",-18} {inventory[index].StorageLocation}\n" +
+                                  $"{"DESCRIPTION:",-18} {inventory[index].Description}\n");
             }
         }
 
