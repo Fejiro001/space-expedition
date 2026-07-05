@@ -173,5 +173,17 @@
             }
             Console.WriteLine($"[SUCCESS] Artifacts successfully exported to {outputFile}");
         }
+
+        static void DisplayAllArtifacts(ref int artifactCount, ref Artifact[] inventory)
+        {
+            Console.WriteLine("-----------------------------------------------------");
+            Console.WriteLine($"{"Decoded Name",-20} | {"Planet",-15} | {"Discovery Date",-15} | StorageLocation");
+            Console.WriteLine("-----------------------------------------------------");
+            for (int i = 0; i < artifactCount - 1; i++)
+            {
+                inventory[i].ToString();
+            }
+            Console.WriteLine("-----------------------------------------------------");
+        }
     }
 }
