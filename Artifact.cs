@@ -83,7 +83,13 @@ namespace SpaceExpedition
 
         public override string ToString()
         {
-            return $"| {DecodedName,-20} | {Planet,-15} | {DiscoveryDate,-15} | {StorageLocation,-15} | {Description}";
+            return new string('─', 100) +
+                   $"\n{"DECODED NAME:",-18} {DecodedName}\n" +
+                   $"{"PLANET:",-18} {Planet}\n" +
+                   $"{"DISCOVERY DATE:",-18} {DiscoveryDate}\n" +
+                   $"{"LOCATION:",-18} {StorageLocation}\n" +
+                   $"{"DESCRIPTION:",-18} {Description}\n" +
+                   new string('─', 100); // Generates a clean dividing underline
         }
 
         // Validate the encoded name inputted by the user

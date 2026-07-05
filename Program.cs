@@ -47,7 +47,10 @@
                 switch (choice)
                 {
                     case 1:
-                        DisplayAllArtifacts(ref artifactCount, ref inventory);
+                        for (int i = 0; i < artifactCount; i++)
+                        {
+                            Console.WriteLine(inventory[i].ToString());
+                        }
                         break;
                     case 2:
                         SearchInventory(ref artifactCount, ref inventory);
@@ -84,18 +87,26 @@
 
         static void ReadFile(string file, ref int artifactCount, ref Artifact[] inventory)
         {
-            using (StreamReader sr = new StreamReader(file))
+            try
             {
-                string line;
-                while ((line = sr.ReadLine()) != null)
+                using (StreamReader sr = new StreamReader(file))
                 {
-                    if (artifactCount == inventory.Length)
+                    string line;
+                    while ((line = sr.ReadLine()) != null)
                     {
-                        ResizeInventory(ref inventory);
+                        if (artifactCount == inventory.Length)
+                        {
+                            ResizeInventory(ref inventory);
+                        }
+                        inventory[artifactCount] = Artifact.ParseArtifact(line);
+                        artifactCount++;
                     }
-                    inventory[artifactCount] = Artifact.ParseArtifact(line);
-                    artifactCount++;
                 }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("The file could not be read.");
+                Console.WriteLine(e.Message);
             }
         }
 
@@ -245,17 +256,6 @@
                 }
             }
             Console.WriteLine($"[SUCCESS] Artifacts successfully exported to {outputFile}");
-        }
-
-        static void DisplayAllArtifacts(ref int artifactCount, ref Artifact[] inventory)
-        {
-            Console.WriteLine($"| {"Decoded Name",-20} | {"Planet",-15} | {"Discovery Date",-15} | {"Storage Location",-15} | Description");
-            Console.WriteLine("-----------------------------------------------------");
-            for (int i = 0; i < artifactCount - 1; i++)
-            {
-                inventory[i].ToString();
-                Console.WriteLine("-----------------------------------------------------");
-            }
         }
     }
 }
