@@ -56,7 +56,32 @@
                     inventory[j + 1] = inventory[j];
                     j--;
                 }
-                inventory[j] = key;
+                inventory[j + 1] = key;
+            }
+        }
+
+        // Using binary search
+        static int SearchInventory(ref int artifactCount, ref Artifact[] inventory, string target, int left, int right)
+        {
+            // Base case
+            if (left > right)
+            {
+                return -1;
+            }
+
+            int mid = left + (right - left) / 2;
+
+            if (inventory[mid].DecodedName.CompareTo(target) == 0)
+            {
+                return mid;
+            }
+            else if (inventory[mid].DecodedName.CompareTo(target) < 0)
+            {
+                return SearchInventory(ref artifactCount, ref inventory, target, mid + 1, right);
+            }
+            else
+            {
+                return SearchInventory(ref artifactCount, ref inventory, target, left, mid - 1);
             }
         }
     }
