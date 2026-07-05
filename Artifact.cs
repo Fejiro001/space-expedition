@@ -32,9 +32,9 @@ namespace SpaceExpedition
             if (!IsValidEncodedName(encodedName))
             {
                 Console.WriteLine($"[ERROR] Wrong encoding detected: '{encodedName}'");
+                return null;
             }
             string decodedName = DecodeName(encodedName);
-
             return new Artifact(encodedName, decodedName, artifactInfo[1], artifactInfo[2], artifactInfo[3], artifactInfo[4]);
         }
 
@@ -107,7 +107,7 @@ namespace SpaceExpedition
                     // First character must be a letter
                     if (!char.IsLetter(token[0])) return false;
 
-                    // Everything afteer the letter must be a number
+                    // Everything after the letter must be a number
                     string numericPart = token.Substring(1);
                     if (!int.TryParse(numericPart, out int result))
                     {

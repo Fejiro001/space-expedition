@@ -53,7 +53,7 @@
                         SearchInventory(ref artifactCount, ref inventory);
                         break;
                     case 3:
-                        // Call AddArtifact
+                        AddArtifact(ref artifactCount, ref inventory);
                         break;
                     case 4:
                         // Call file writer
@@ -170,8 +170,42 @@
             }
         }
 
+        static void AddArtifact(ref int artifactCount, ref Artifact[] inventory)
+        {
+            Console.WriteLine("\n┌────────────────────────────────────────┐");
+            Console.WriteLine("│      LOG NEW ARCHAEOLOGICAL DISCOVERY  │");
+            Console.WriteLine("└────────────────────────────────────────┘");
+
+            Console.WriteLine("Enter Encoded Name (e.g., D3|X2|C6):");
+            string encoded = Console.ReadLine().Trim();
+
+            Console.WriteLine("Enter Origin Planet/Celestial Body:");
+            string planet = Console.ReadLine().Trim();
+
+            Console.WriteLine("Enter Discovery Date:");
+            string date = Console.ReadLine().Trim();
+
+            Console.WriteLine("Enter Secure Storage Location:");
+            string location = Console.ReadLine().Trim();
+
+            Console.WriteLine("Enter Artifact Description:");
+            string description = Console.ReadLine().Trim();
+
+            string simulatedRawLine = $"{encoded},{planet},{date},{location},{description}";
+            Artifact newArtifact = Artifact.ParseArtifact(simulatedRawLine);
+
+            if (newArtifact != null)
+            {
+                ImplementOrderedInsertion(ref artifactCount, ref inventory, newArtifact);
+                Console.WriteLine("\n[SUCCESS] Addition complete. Artifact logged alphabetically.");
+            } else
+            {
+                Console.WriteLine("\n[ERROR] Addition aborted due to the invalid entry above.");
+            }
+        }
+
         // Using ordered insertion
-        static void AddArtifact(ref int artifactCount, ref Artifact[] inventory, Artifact target)
+        static void ImplementOrderedInsertion(ref int artifactCount, ref Artifact[] inventory, Artifact target)
         {
             if (artifactCount == inventory.Length)
             {
@@ -205,7 +239,7 @@
 
         static void DisplayAllArtifacts(ref int artifactCount, ref Artifact[] inventory)
         {
-            Console.WriteLine($"| {"Decoded Name",-20} | {"Planet",-15} | {"Discovery Date",-15} | {"StorageLocation",-15} | Description");
+            Console.WriteLine($"| {"Decoded Name",-20} | {"Planet",-15} | {"Discovery Date",-15} | {"Storage Location",-15} | Description");
             Console.WriteLine("-----------------------------------------------------");
             for (int i = 0; i < artifactCount - 1; i++)
             {
