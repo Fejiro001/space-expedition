@@ -28,15 +28,30 @@ namespace SpaceExpedition
             // Split each line into 5 parts using comma delimeter
             string[] artifactInfo = rawLine.Split(",", 5);
             string encodedName = artifactInfo[0];
-            string decodedName = DecodedWord(encodedName);
+            string decodedName = DecodeName(encodedName);
 
             return new Artifact(encodedName, decodedName, artifactInfo[1], artifactInfo[2], artifactInfo[3], artifactInfo[4]);
         }
 
-        private static string DecodedWord(string encodedName)
+        private static string DecodeName(string encodedName)
         {
-            // 3. Call a recursive decoder to get decoded name
-            return "";
+            StringBuilder sb = new StringBuilder();
+            string[] words = encodedName.Split(" ", StringSplitOptions.RemoveEmptyEntries);
+
+            foreach (string word in words)
+            {
+                string[] tokens = word.Split("|");
+
+                foreach (string token in tokens)
+                {
+                    char letter = token[0];
+                    int level = int.Parse(token.Substring(1));
+                    sb.Append(DecodeCharacter(letter, level));
+                }
+                sb.Append(' ');
+            }
+
+            return sb.ToString().Trim();
         }
 
         private static char DecodeCharacter(char encodedChar, int level)
