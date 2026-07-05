@@ -84,5 +84,25 @@
                 return SearchInventory(ref artifactCount, ref inventory, target, left, mid - 1);
             }
         }
+
+        // Using ordered insertion
+        static void AddArtifact(ref int artifactCount, ref Artifact[] inventory, Artifact target)
+        {
+            if (artifactCount == inventory.Length)
+            {
+                ResizeInventory(ref inventory);
+            }
+
+            int i = artifactCount - 1;
+
+            while (i >= 0 && inventory[i].DecodedName.CompareTo(target.DecodedName) > 0)
+            {
+                inventory[i + 1] = inventory[i];
+                i--;
+            }
+
+            inventory[i + 1] = target;
+            artifactCount++;
+        }
     }
 }
