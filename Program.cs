@@ -9,6 +9,62 @@
             string vaultFile = "galactic_vault.txt";
 
             Console.WriteLine("--- GALACTIC INVENTORY SYSTEM INITIALIZED ---");
+
+            StartExpedition(vaultFile, ref artifactCount, ref inventory);
+        }
+
+        static void StartExpedition(string vaultFile, ref int artifactCount, ref Artifact[] inventory)
+        {
+            ReadFile(vaultFile, ref artifactCount, ref inventory);
+            SortInventory(ref artifactCount, ref inventory);
+
+            bool running = true;
+            while (running)
+            {
+                Console.WriteLine("\n=== MAIN MENU ===");
+                Console.WriteLine("1. Display Inventory");
+                Console.WriteLine("2. Search for an Artifact");
+                Console.WriteLine("3. Add New Discovered Artifact");
+                Console.WriteLine("4. Save and Exit");
+                Console.WriteLine("Select an option:");
+
+                int choice;
+                bool correctChoice;
+
+                do
+                {
+                    correctChoice = int.TryParse(Console.ReadLine().Trim(), out choice) 
+                        && choice >= 1 
+                        && choice <= 4;
+
+                    if (!correctChoice)
+                    {
+                        Console.WriteLine("Invalid option selected. Please try again.");
+                    }
+                }
+                while (!correctChoice);
+
+                switch (choice)
+                {
+                    case 1:
+                        // Call a method to display all details
+                        break;
+                    case 2:
+                        // Call SearchInventory
+                        break;
+                    case 3:
+                        // Call AddArtifact
+                        break;
+                    case 4:
+                        // Call file writer
+                        running = false;
+                        Console.WriteLine("Exiting and saving data... Safe travels, exploorer!");
+                        break;
+                    default:
+                        Console.WriteLine("Invalid option. Try again.");
+                        break;
+                }
+            }
         }
 
         static void ResizeInventory(ref Artifact[] inventory)
