@@ -42,5 +42,22 @@
                 }
             }
         }
+
+        // Using insertion sort
+        static void SortInventory(ref int artifactCount, ref Artifact[] inventory)
+        {
+            for (int i = 1; i < artifactCount; i++)
+            {
+                Artifact key = inventory[i];
+                int j = i - 1;
+
+                while (j >= 0 && inventory[j].DecodedName.CompareTo(key.DecodedName) > 0)
+                {
+                    inventory[j + 1] = inventory[j];
+                    j--;
+                }
+                inventory[j] = key;
+            }
+        }
     }
 }
