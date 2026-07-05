@@ -25,21 +25,32 @@ namespace SpaceExpedition
 
         public static Artifact ParseArtifact(string rawLine)
         {
+            if (string.IsNullOrWhiteSpace(rawLine)) return null;
+
             // Split each line into 5 parts using comma delimeter
             string[] artifactInfo = rawLine.Split(",", 5);
+
+            if (artifactInfo.Length < 5)
+            {
+                Console.WriteLine($"[DATA WARNING] Skipping corrupted line (Missing fields): \"{rawLine}\"");
+                return null;
+            }
+
             string encodedName = artifactInfo[0];
 
             if (!IsValidEncodedName(encodedName))
             {
-                Console.WriteLine($"[ERROR] Wrong encoding detected: '{encodedName}'");
+                Console.WriteLine($"[DATA WARNING] Skipping record due to invalid token sequence: '{encodedName}'");
                 return null;
             }
+
             string decodedName = DecodeName(encodedName);
             return new Artifact(encodedName, decodedName, artifactInfo[1], artifactInfo[2], artifactInfo[3], artifactInfo[4]);
         }
 
         private static string DecodeName(string encodedName)
         {
+            // Preferred usage of StringBuilder to improve memory usage since strings are immutable
             StringBuilder sb = new StringBuilder();
             string[] words = encodedName.Split(" ", StringSplitOptions.RemoveEmptyEntries);
 
