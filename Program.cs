@@ -25,5 +25,22 @@
 
             inventory = biggerInventory;
         }
+
+        static void ReadFile(string file, ref int artifactCount, ref Artifact[] inventory)
+        {
+            using (StreamReader sr = new StreamReader(file))
+            {
+                string line;
+                while ((line = sr.ReadLine()) != null)
+                {
+                    if (artifactCount == inventory.Length)
+                    {
+                        ResizeInventory(ref inventory);
+                    }
+                    inventory[artifactCount] = Artifact.ParseArtifact(line);
+                    artifactCount++;
+                }
+            }
+        }
     }
 }
