@@ -78,7 +78,7 @@ namespace SpaceExpedition
 
         public override string ToString()
         {
-            return $"{DecodedName,-20} | {Planet,-15} | {DiscoveryDate,-15} | {StorageLocation}";
+            return $"| {DecodedName,-20} | {Planet,-15} | {DiscoveryDate,-15} | {StorageLocation}";
         }
     }
 }

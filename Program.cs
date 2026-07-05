@@ -47,7 +47,7 @@
                 switch (choice)
                 {
                     case 1:
-                        // Call a method to display all details
+                        DisplayAllArtifacts(ref artifactCount, ref inventory);
                         break;
                     case 2:
                         // Call SearchInventory
@@ -176,14 +176,13 @@
 
         static void DisplayAllArtifacts(ref int artifactCount, ref Artifact[] inventory)
         {
-            Console.WriteLine("-----------------------------------------------------");
-            Console.WriteLine($"{"Decoded Name",-20} | {"Planet",-15} | {"Discovery Date",-15} | StorageLocation");
+            Console.WriteLine($"| {"Decoded Name",-20} | {"Planet",-15} | {"Discovery Date",-15} | StorageLocation");
             Console.WriteLine("-----------------------------------------------------");
             for (int i = 0; i < artifactCount - 1; i++)
             {
                 inventory[i].ToString();
+                Console.WriteLine("-----------------------------------------------------");
             }
-            Console.WriteLine("-----------------------------------------------------");
         }
     }
 }
