@@ -28,6 +28,11 @@ namespace SpaceExpedition
             // Split each line into 5 parts using comma delimeter
             string[] artifactInfo = rawLine.Split(",", 5);
             string encodedName = artifactInfo[0];
+
+            if (!IsValidEncodedName(encodedName))
+            {
+                Console.WriteLine($"[ERROR] Wrong encoding detected: '{encodedName}'");
+            }
             string decodedName = DecodeName(encodedName);
 
             return new Artifact(encodedName, decodedName, artifactInfo[1], artifactInfo[2], artifactInfo[3], artifactInfo[4]);
@@ -78,7 +83,40 @@ namespace SpaceExpedition
 
         public override string ToString()
         {
-            return $"| {DecodedName,-20} | {Planet,-15} | {DiscoveryDate,-15} | {StorageLocation}";
+            return $"| {DecodedName,-20} | {Planet,-15} | {DiscoveryDate,-15} | {StorageLocation,-15} | {Description}";
+        }
+
+        // Validate the encoded name inputted by the user
+        private static bool IsValidEncodedName(string encodedName)
+        {
+            if (string.IsNullOrWhiteSpace(encodedName)) return false;
+
+            string[] words = encodedName.Split(" ", StringSplitOptions.RemoveEmptyEntries);
+            if (words.Length == 0) return false;
+
+            foreach (string word in words)
+            {
+                // Split to get individual letter-level tokens
+                string[] tokens = word.Split("|");
+
+                foreach (string token in tokens)
+                {
+                    // Token must be at least 2 characters
+                    if (token.Length < 2) return false;
+
+                    // First character must be a letter
+                    if (!char.IsLetter(token[0])) return false;
+
+                    // Everything afteer the letter must be a number
+                    string numericPart = token.Substring(1);
+                    if (!int.TryParse(numericPart, out int result))
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
         }
     }
 }

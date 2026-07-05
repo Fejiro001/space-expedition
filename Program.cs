@@ -50,7 +50,7 @@
                         DisplayAllArtifacts(ref artifactCount, ref inventory);
                         break;
                     case 2:
-                        // Call SearchInventory
+                        SearchInventory(ref artifactCount, ref inventory);
                         break;
                     case 3:
                         // Call AddArtifact
@@ -116,8 +116,37 @@
             }
         }
 
+        // Use ImplementBinarySearch to search inventory
+        static void SearchInventory(ref int artifactCount, ref Artifact[] inventory)
+        {
+            string name;
+
+            do
+            {
+                Console.WriteLine("Enter an Artifact decoded name to search for in the inventory:");
+                name = Console.ReadLine().Trim();
+
+                if (string.IsNullOrWhiteSpace(name))
+                {
+                    Console.WriteLine("\nEnter a valid string.");
+                }
+            }
+            while (string.IsNullOrWhiteSpace(name));
+
+            int index = ImplementBinarySearch(ref artifactCount, ref inventory, name, 0, artifactCount - 1);
+
+            if (index < 0)
+            {
+                Console.WriteLine("Artifact not found.");
+            }
+            else
+            {
+                Console.WriteLine($"| {inventory[index].DecodedName,-20} | {inventory[index].Planet,-15} | {inventory[index].DiscoveryDate,-15} | {inventory[index].StorageLocation,-15} | {inventory[index].Description}");
+            }
+        }
+
         // Using binary search
-        static int SearchInventory(ref int artifactCount, ref Artifact[] inventory, string target, int left, int right)
+        static int ImplementBinarySearch(ref int artifactCount, ref Artifact[] inventory, string target, int left, int right)
         {
             // Base case
             if (left > right)
@@ -133,11 +162,11 @@
             }
             else if (inventory[mid].DecodedName.CompareTo(target) < 0)
             {
-                return SearchInventory(ref artifactCount, ref inventory, target, mid + 1, right);
+                return ImplementBinarySearch(ref artifactCount, ref inventory, target, mid + 1, right);
             }
             else
             {
-                return SearchInventory(ref artifactCount, ref inventory, target, left, mid - 1);
+                return ImplementBinarySearch(ref artifactCount, ref inventory, target, left, mid - 1);
             }
         }
 
@@ -176,7 +205,7 @@
 
         static void DisplayAllArtifacts(ref int artifactCount, ref Artifact[] inventory)
         {
-            Console.WriteLine($"| {"Decoded Name",-20} | {"Planet",-15} | {"Discovery Date",-15} | StorageLocation");
+            Console.WriteLine($"| {"Decoded Name",-20} | {"Planet",-15} | {"Discovery Date",-15} | {"StorageLocation",-15} | Description");
             Console.WriteLine("-----------------------------------------------------");
             for (int i = 0; i < artifactCount - 1; i++)
             {
