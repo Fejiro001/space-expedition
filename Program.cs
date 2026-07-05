@@ -6,7 +6,7 @@
         {
             Artifact[] inventory = new Artifact[5];
             int artifactCount = 0;
-            string vaultFile = "galactic_vault.txt";
+            string vaultFile = "../../../galactic_vault.txt";
 
             Console.WriteLine("--- GALACTIC INVENTORY SYSTEM INITIALIZED ---");
 
@@ -176,20 +176,11 @@
             Console.WriteLine("│      LOG NEW ARCHAEOLOGICAL DISCOVERY  │");
             Console.WriteLine("└────────────────────────────────────────┘");
 
-            Console.WriteLine("Enter Encoded Name (e.g., D3|X2|C6):");
-            string encoded = Console.ReadLine().Trim();
-
-            Console.WriteLine("Enter Origin Planet/Celestial Body:");
-            string planet = Console.ReadLine().Trim();
-
-            Console.WriteLine("Enter Discovery Date:");
-            string date = Console.ReadLine().Trim();
-
-            Console.WriteLine("Enter Secure Storage Location:");
-            string location = Console.ReadLine().Trim();
-
-            Console.WriteLine("Enter Artifact Description:");
-            string description = Console.ReadLine().Trim();
+            string encoded = GetNonEmptyInput("Enter Encoded Name (e.g., D3|X2|C6):");
+            string planet = GetNonEmptyInput("Enter Origin Planet/Celestial Body:");
+            string date = GetNonEmptyInput("Enter Discovery Date:");
+            string location = GetNonEmptyInput("Enter Secure Storage Location:");
+            string description = GetNonEmptyInput("Enter Artifact Description:");
 
             string simulatedRawLine = $"{encoded},{planet},{date},{location},{description}";
             Artifact newArtifact = Artifact.ParseArtifact(simulatedRawLine);
@@ -198,10 +189,29 @@
             {
                 ImplementOrderedInsertion(ref artifactCount, ref inventory, newArtifact);
                 Console.WriteLine("\n[SUCCESS] Addition complete. Artifact logged alphabetically.");
-            } else
+            }
+            else
             {
                 Console.WriteLine("\n[ERROR] Addition aborted due to the invalid entry above.");
             }
+        }
+
+        // Ensures a user input is not empty
+        static string GetNonEmptyInput(string prompt)
+        {
+            string input = "";
+
+            while (string.IsNullOrWhiteSpace(input))
+            {
+                Console.WriteLine(prompt);
+                input = Console.ReadLine().Trim();
+
+                if (string.IsNullOrWhiteSpace(input))
+                {
+                    Console.WriteLine("[ALERT] This field is mandatory. Input cannot be empty!");
+                }
+            }
+            return input;
         }
 
         // Using ordered insertion
