@@ -33,8 +33,8 @@
 
                 do
                 {
-                    correctChoice = int.TryParse(Console.ReadLine().Trim(), out choice) 
-                        && choice >= 1 
+                    correctChoice = int.TryParse(Console.ReadLine().Trim(), out choice)
+                        && choice >= 1
                         && choice <= 4;
 
                     if (!correctChoice)
@@ -159,6 +159,19 @@
 
             inventory[i + 1] = target;
             artifactCount++;
+        }
+
+        static void SaveToFile(string outputFile, int artifactCount, Artifact[] inventory)
+        {
+            using (StreamWriter sw = new StreamWriter(outputFile))
+            {
+                for (int i = 0; i < artifactCount; i++)
+                {
+                    sw.WriteLine(inventory[i]);
+                    sw.WriteLine(",");
+                }
+            }
+            Console.WriteLine($"[SUCCESS] Artifacts successfully exported to {outputFile}");
         }
     }
 }

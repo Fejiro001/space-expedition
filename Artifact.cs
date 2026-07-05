@@ -44,8 +44,9 @@ namespace SpaceExpedition
 
                 foreach (string token in tokens)
                 {
-                    char letter = token[0];
-                    int level = int.Parse(token.Substring(1));
+                    string trimmedToken = token.Trim();
+                    char letter = trimmedToken[0];
+                    int level = int.Parse(trimmedToken.Substring(1));
                     sb.Append(DecodeCharacter(letter, level));
                 }
                 sb.Append(' ');
@@ -73,6 +74,11 @@ namespace SpaceExpedition
             }
 
             return DecodeCharacter(mappedArray[targetIndex], level - 1);
+        }
+
+        public override string ToString()
+        {
+            return $"{DecodedName,-20} | {Planet,-15} | {DiscoveryDate,-15} | {StorageLocation}";
         }
     }
 }
