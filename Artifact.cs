@@ -6,6 +6,7 @@ namespace SpaceExpedition
     {
         private static readonly char[] originalArray = new char[] { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
         private static readonly char[] mappedArray = new char[] { 'H', 'Z', 'A', 'U', 'Y', 'E', 'K', 'G', 'O', 'T', 'I', 'R', 'J', 'V', 'W', 'N', 'M', 'F', 'Q', 'S', 'D', 'B', 'X', 'L', 'C', 'P' };
+        // Made all setters private so they are not modified outside the class
         public string EncodedName { get; private set; }
         public string DecodedName { get; private set; }
         public string Planet { get; private set; }
@@ -23,6 +24,12 @@ namespace SpaceExpedition
             Description = description;
         }
 
+        /// <summary>
+        /// Separates a raw comma-delimited string line from a text file, validates the token sequence, 
+        /// and converts it into a structured Artifact object.
+        /// </summary>
+        /// <param name="rawLine">The comma-separated text string containing the raw artifact attributes.</param>
+        /// <returns>A fully initialized Artifact object if valid; otherwise, null if corrupted or invalid.</returns>
         public static Artifact? ParseArtifact(string rawLine)
         {
             if (string.IsNullOrWhiteSpace(rawLine)) return null;
@@ -50,7 +57,7 @@ namespace SpaceExpedition
 
         private static string DecodeName(string encodedName)
         {
-            // Preferred usage of StringBuilder to improve memory usage since strings are immutable
+            // Preferred use of StringBuilder to improve memory usage since strings are immutable
             StringBuilder sb = new StringBuilder();
             string[] words = encodedName.Split(" ", StringSplitOptions.RemoveEmptyEntries);
 
@@ -61,8 +68,10 @@ namespace SpaceExpedition
                 foreach (string token in tokens)
                 {
                     string trimmedToken = token.Trim();
+
                     char letter = trimmedToken[0];
                     int level = int.Parse(trimmedToken.Substring(1));
+
                     sb.Append(DecodeCharacter(letter, level));
                 }
                 sb.Append(' ');
@@ -71,6 +80,13 @@ namespace SpaceExpedition
             return sb.ToString().Trim();
         }
 
+        /// <summary>
+        /// A recursive algorithm that maps an encoded letter through coded arrays 
+        /// based on its designated level layer until reaching the mirrored base case.
+        /// </summary>
+        /// <param name="encodedChar">The character currently being decoded.</param>
+        /// <param name="level">The remaining levels of encryption layers left.</param>
+        /// <returns>The decoded uppercase character.</returns>
         private static char DecodeCharacter(char encodedChar, int level)
         {
             int targetIndex = -1;

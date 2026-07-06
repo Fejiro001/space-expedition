@@ -88,6 +88,13 @@
             inventory = biggerInventory;
         }
 
+        /// <summary>
+        /// Stream-reads the base file line-by-line, implementing array capacity expansions and 
+        /// data translations while intercepting missing file path or security access issues.
+        /// </summary>
+        /// <param name="file">The relative path mapping to the initial storage text file.</param>
+        /// <param name="artifactCount">A reference tracking the current running total of elements in the array.</param>
+        /// <param name="inventory">A reference to the collection array where the artifacts will be stored.</param>
         static void ReadFile(string file, ref int artifactCount, ref Artifact[] inventory)
         {
             if (!File.Exists(file))
@@ -185,7 +192,15 @@
             }
         }
 
-        // Using binary search
+        /// <summary>
+        /// Efficiently searches a sorted array of artifacts for an exact matching name by splitting the search bounds in half recursively.
+        /// </summary>
+        /// <param name="artifactCount">The total number of total of elements in the array.</param>
+        /// <param name="inventory">A reference to the collection array where the artifacts will be stored.</param>
+        /// <param name="target">The exact uppercase decoded name string to search for.</param>
+        /// <param name="left">The lower bounding index of the current sub-array boundary.</param>
+        /// <param name="right">The upper bounding index of the current sub-array boundary.</param>
+        /// <returns>The zero-based index where the target artifact resides, or -1 if the artifact is not found.</returns>
         static int ImplementBinarySearch(ref int artifactCount, ref Artifact[] inventory, string target, int left, int right)
         {
             // Base case
@@ -279,7 +294,13 @@
             return input;
         }
 
-        // Using ordered insertion
+        /// <summary>
+        /// Shifts existing items down to safely insert a newly discovered artifact into its correct, 
+        /// alphabetically sorted position while dynamically checking for array capacity expansion.
+        /// </summary>
+        /// <param name="artifactCount">A reference tracking the current running total of elements in the array.</param>
+        /// <param name="inventory">A reference to the collection array where the artifact will be stored.</param>
+        /// <param name="target">The newly constructed unique Artifact object to insert.</param>
         static void ImplementOrderedInsertion(ref int artifactCount, ref Artifact[] inventory, Artifact target)
         {
             if (artifactCount == inventory.Length)
