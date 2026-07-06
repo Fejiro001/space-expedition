@@ -184,12 +184,12 @@
 
             do
             {
-                Console.WriteLine("Enter an Artifact full decoded name in uppercase to search for in the inventory:");
+                Console.WriteLine("\nEnter an Artifact full decoded name in uppercase to search for in the inventory:");
                 name = Console.ReadLine().Trim().ToUpper(); // Automatically made it uppercase regardless
 
                 if (string.IsNullOrWhiteSpace(name))
                 {
-                    Console.WriteLine("\nEnter a valid string.");
+                    Console.WriteLine("Enter a valid string.");
                 }
             }
             while (string.IsNullOrWhiteSpace(name));
@@ -198,7 +198,7 @@
 
             if (index < 0)
             {
-                Console.WriteLine("Artifact not found.");
+                Console.WriteLine("\nArtifact not found.");
             }
             else
             {
@@ -253,7 +253,7 @@
             Console.WriteLine("└────────────────────────────────────────┘");
 
             // Get the Journey log filename from the user
-            string fileName = GetNonEmptyInput("Enter the journey log file name (e.g., artifact_name):");
+            string fileName = GetNonEmptyInput("\nEnter the journey log file name (e.g., artifact_name):");
 
             // If the user still adds .txt
             if (fileName.EndsWith(".txt", StringComparison.OrdinalIgnoreCase))

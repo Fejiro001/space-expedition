@@ -98,11 +98,11 @@ namespace SpaceExpedition
         }
 
         /// <summary>
-        /// A recursive algorithm that maps an encoded letter through coded arrays 
+        /// A recursive algorithm that maps an encoded letter through character arrays 
         /// based on its designated level layer until reaching the mirrored base case.
         /// </summary>
         /// <param name="encodedChar">The character currently being decoded.</param>
-        /// <param name="level">The remaining levels of encryption layers left.</param>
+        /// <param name="level">The remaining levels of an encrypted character.</param>
         /// <returns>The decoded uppercase character.</returns>
         private static char DecodeCharacter(char encodedChar, int level)
         {
@@ -143,7 +143,7 @@ namespace SpaceExpedition
         /// <summary>
         /// Runs comprehensive syntax checks against a key token sequence to ensure safe decoding transformations.
         /// </summary>
-        /// <param name="encodedName">The token segment targeted for evaluation.</param>
+        /// <param name="encodedName">The token sequence to be evaluated.</param>
         /// <returns>True if the formatting sequence matches standard structures; otherwise, false.</returns>
         private static bool IsValidEncodedName(string encodedName)
         {
