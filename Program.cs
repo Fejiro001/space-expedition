@@ -216,8 +216,9 @@
 
             // Get the Journey log filename from the user
             string fileName = GetNonEmptyInput("Enter the journey log file name (e.g., artifact_name.txt):");
+            string relativePath = $"../../../{fileName}";
 
-            if (!File.Exists(fileName))
+            if (!File.Exists(relativePath))
             {
                 Console.WriteLine($"\n[SYSTEM ERROR] Journey log '{fileName}' could not be found");
                 return;
@@ -226,7 +227,7 @@
             string rawLine = "";
             try
             {
-                using (StreamReader sr = new StreamReader(fileName))
+                using (StreamReader sr = new StreamReader(relativePath))
                 {
                     rawLine = sr.ReadLine();
                 }
