@@ -7,6 +7,10 @@
             StartExpedition();
         }
 
+        /// <summary>
+        /// Handles the entire expedition lifecycle by initializing the core storage array, 
+        /// triggering the load and sort functionalities, and driving the main interactive user menu loop.
+        /// </summary>
         static void StartExpedition()
         {
             Artifact[] inventory = new Artifact[5];
@@ -73,6 +77,11 @@
             }
         }
 
+        /// <summary>
+        /// Manually doubles the storage capacity of the inventory array when maximum limit is reached,
+        /// replicating array resizing without utilizing built-in System.Array methods.
+        /// </summary>
+        /// <param name="inventory">A reference to the collection array undergoing expansion.</param>
         static void ResizeInventory(ref Artifact[] inventory)
         {
             int newSize = inventory.Length * 2;
@@ -142,7 +151,11 @@
             }
         }
 
-        // Using insertion sort
+        /// <summary>
+        /// Sorts the current loaded items alphabetically by their decoded names using an optimized insertion sort algorithm.
+        /// </summary>
+        /// <param name="artifactCount">A reference tracking the current running total of elements in the array.</param>
+        /// <param name="inventory">A reference to the collection array to be sorted.</param>
         static void SortInventory(ref int artifactCount, ref Artifact[] inventory)
         {
             for (int i = 1; i < artifactCount; i++)
@@ -159,7 +172,12 @@
             }
         }
 
-        // Use ImplementBinarySearch to search inventory
+        /// <summary>
+        /// Prompts the user for an uppercase decoded name, executes a binary search,
+        /// and prints formatted detailed specs of the artifact if discovered.
+        /// </summary>
+        /// <param name="artifactCount">The total number of active elements in the array.</param>
+        /// <param name="inventory">A reference to the collection array to search within.</param>
         static void SearchInventory(ref int artifactCount, ref Artifact[] inventory)
         {
             string name;
@@ -196,7 +214,7 @@
         /// Efficiently searches a sorted array of artifacts for an exact matching name by splitting the search bounds in half recursively.
         /// </summary>
         /// <param name="artifactCount">The total number of total of elements in the array.</param>
-        /// <param name="inventory">A reference to the collection array where the artifacts will be stored.</param>
+        /// <param name="inventory">A reference to the collection array where the artifacts are stored.</param>
         /// <param name="target">The exact uppercase decoded name string to search for.</param>
         /// <param name="left">The lower bounding index of the current sub-array boundary.</param>
         /// <param name="right">The upper bounding index of the current sub-array boundary.</param>
@@ -214,7 +232,7 @@
             {
                 return ImplementBinarySearch(ref artifactCount, ref inventory, target, mid + 1, right);
             }
-            else if(inventory[mid].DecodedName.CompareTo(target) > 0)
+            else if (inventory[mid].DecodedName.CompareTo(target) > 0)
             {
                 return ImplementBinarySearch(ref artifactCount, ref inventory, target, left, mid - 1);
             }
@@ -222,6 +240,12 @@
             return mid;
         }
 
+        /// <summary>
+        /// Guides the user through uploading a journey log text file, translates the string data,
+        /// ensures duplicate entries are rejected via binary searching, and inserts entries alphabetically.
+        /// </summary>
+        /// <param name="artifactCount">A reference tracking the current running total of elements in the array.</param>
+        /// <param name="inventory">A reference to the collection array where the artifacts are stored.</param>
         static void AddArtifact(ref int artifactCount, ref Artifact[] inventory)
         {
             Console.WriteLine("\n┌────────────────────────────────────────┐");
@@ -259,11 +283,11 @@
                 return;
             }
 
-            Artifact newArtifact = Artifact.ParseArtifact(rawLine);
+            Artifact? newArtifact = Artifact.ParseArtifact(rawLine);
 
             if (newArtifact != null)
             {
-                // Check to see if the artifact allready exists in the inventory
+                // Check to see if the artifact already exists in the inventory
                 int duplicateCheck = ImplementBinarySearch(ref artifactCount, ref inventory, newArtifact.DecodedName, 0, artifactCount - 1);
 
                 if (duplicateCheck >= 0)
@@ -282,7 +306,12 @@
             }
         }
 
-        // Ensures a user input is not empty
+        /// <summary>
+        /// Repeatedly prompts the user for text input until a non-empty, non-whitespace string is provided,
+        /// ensuring mandatory console fields cannot be bypassed.
+        /// </summary>
+        /// <param name="prompt">The instructional message displayed to the console requesting input.</param>
+        /// <returns>A validated, trimmed string containing the user's response.</returns>
         static string GetNonEmptyInput(string prompt)
         {
             string input = "";
@@ -326,6 +355,12 @@
             artifactCount++;
         }
 
+        /// <summary>
+        /// Formats and stream-writes the final updated inventory dataset back to a specified file path upon exit.
+        /// </summary>
+        /// <param name="outputFile">The target destination save path.</param>
+        /// <param name="artifactCount">A reference tracking the current running total of elements in the array.</param>
+        /// <param name="inventory">A reference to the collection array where the artifacts are stored.</param>
         static void SaveToFile(string outputFile, int artifactCount, Artifact[] inventory)
         {
             try
