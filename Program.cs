@@ -88,6 +88,13 @@
 
         static void ReadFile(string file, ref int artifactCount, ref Artifact[] inventory)
         {
+            if (!File.Exists(file))
+            {
+                Console.WriteLine($"[SYSTEM ERROR] File could not be found at: {file}");
+                Console.WriteLine("Initializing empty inventory. Manual entry is possible");
+                return;
+            }
+
             try
             {
                 using (StreamReader sr = new StreamReader(file))
@@ -107,10 +114,21 @@
                         }
                     }
                 }
+                Console.WriteLine($"[SUCCESS] Loaded {artifactCount} successfully.");
+            }
+            catch (UnauthorizedAccessException e)
+            {
+                Console.WriteLine("[SYSTEM ERROR] Access denied. You do not have permission to read this file.");
+                Console.WriteLine(e.Message);
+            }
+            catch (IOException e)
+            {
+                Console.WriteLine($"[SYSTEM ERROR] An I/O error occurred while reading the file.");
+                Console.WriteLine(e.Message);
             }
             catch (Exception e)
             {
-                Console.WriteLine("The file could not be read.");
+                Console.WriteLine("[SYSTEM ERROR] An unexpected error occurred while reading the file.");
                 Console.WriteLine(e.Message);
             }
         }
@@ -265,13 +283,23 @@
                         sw.WriteLine($"{inventory[i].EncodedName},{inventory[i].Planet},{inventory[i].DiscoveryDate},{inventory[i].StorageLocation},{inventory[i].Description}");
                     }
                 }
+                Console.WriteLine($"[SUCCESS] Artifacts successfully exported.");
+            }
+            catch (UnauthorizedAccessException e)
+            {
+                Console.WriteLine("[CRITICAL ERROR] Save Failed: Insufficient admin privileges to write.");
+                Console.WriteLine(e.Message);
+            }
+            catch (IOException e)
+            {
+                Console.WriteLine($"[CRITICAL ERROR] Save Failed: Disk may be full or blocked by another process.");
+                Console.WriteLine(e.Message);
             }
             catch (Exception e)
             {
-                Console.WriteLine("The file could not be saved.");
+                Console.WriteLine("[CRITICAL ERROR] An unexpected error occurred while saving the file.");
                 Console.WriteLine(e.Message);
             }
-            Console.WriteLine("[SUCCESS] Artifacts successfully exported.");
         }
     }
 }
