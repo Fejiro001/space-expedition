@@ -2,11 +2,15 @@
 
 namespace SpaceExpedition
 {
+    /// <summary>
+    /// Represents a singular archaeological item recovered from space exploration, encapsulating 
+    /// properties for encoded identities, localization data, and recursive translation properties.
+    /// </summary>
     public class Artifact
     {
         private static readonly char[] originalArray = new char[] { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
         private static readonly char[] mappedArray = new char[] { 'H', 'Z', 'A', 'U', 'Y', 'E', 'K', 'G', 'O', 'T', 'I', 'R', 'J', 'V', 'W', 'N', 'M', 'F', 'Q', 'S', 'D', 'B', 'X', 'L', 'C', 'P' };
-        // Made all setters private so they are not modified outside the class
+
         public string EncodedName { get; private set; }
         public string DecodedName { get; private set; }
         public string Planet { get; private set; }
@@ -43,7 +47,7 @@ namespace SpaceExpedition
                 return null;
             }
 
-            string encodedName = artifactInfo[0];
+            string encodedName = artifactInfo[0].Trim();
 
             if (!IsValidEncodedName(encodedName))
             {
@@ -52,12 +56,25 @@ namespace SpaceExpedition
             }
 
             string decodedName = DecodeName(encodedName);
-            return new Artifact(encodedName, decodedName, artifactInfo[1], artifactInfo[2], artifactInfo[3], artifactInfo[4]);
+
+            return new Artifact(
+                encodedName,
+                decodedName,
+                artifactInfo[1].Trim(),
+                artifactInfo[2].Trim(),
+                artifactInfo[3].Trim(),
+                artifactInfo[4].Trim()
+                );
         }
 
+        /// <summary>
+        /// Parses an encoded sequence string into distinct space-delimited words and pipe tokens,
+        /// driving char-by-char recursive reconstruction using a StringBuilder.
+        /// </summary>
+        /// <param name="encodedName">The full compound string identity needing conversion.</param>
+        /// <returns>The translated string result in uniform uppercase alignment.</returns>
         private static string DecodeName(string encodedName)
         {
-            // Preferred use of StringBuilder to improve memory usage since strings are immutable
             StringBuilder sb = new StringBuilder();
             string[] words = encodedName.Split(" ", StringSplitOptions.RemoveEmptyEntries);
 
@@ -108,6 +125,10 @@ namespace SpaceExpedition
             return DecodeCharacter(mappedArray[targetIndex], level - 1);
         }
 
+        /// <summary>
+        /// Formats the complete record specifications into an isolated visual block console layout.
+        /// </summary>
+        /// <returns>A string representation designed for orderly terminal grids.</returns>
         public override string ToString()
         {
             return new string('─', 100) +
@@ -119,7 +140,11 @@ namespace SpaceExpedition
                    new string('─', 100); // Generates a clean dividing underline
         }
 
-        // Validates the encoded name before adding to an instance of an Artifact
+        /// <summary>
+        /// Runs comprehensive syntax checks against a key token sequence to ensure safe decoding transformations.
+        /// </summary>
+        /// <param name="encodedName">The token segment targeted for evaluation.</param>
+        /// <returns>True if the formatting sequence matches standard structures; otherwise, false.</returns>
         private static bool IsValidEncodedName(string encodedName)
         {
             if (string.IsNullOrWhiteSpace(encodedName)) return false;
@@ -129,20 +154,15 @@ namespace SpaceExpedition
 
             foreach (string word in words)
             {
-                // Split to get individual letter-level tokens
                 string[] tokens = word.Split("|");
 
                 foreach (string token in tokens)
                 {
-                    // Token must be at least 2 characters
                     if (token.Length < 2) return false;
-
-                    // First character must be a letter and uppercase
                     if (!char.IsUpper(token, 0)) return false;
 
-                    // Everything after the letter must be a number
                     string numericPart = token.Substring(1);
-                    if (!int.TryParse(numericPart, out int result))
+                    if (!int.TryParse(numericPart, out _))
                     {
                         return false;
                     }
