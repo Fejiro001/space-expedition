@@ -23,7 +23,7 @@ namespace SpaceExpedition
             Description = description;
         }
 
-        public static Artifact ParseArtifact(string rawLine)
+        public static Artifact? ParseArtifact(string rawLine)
         {
             if (string.IsNullOrWhiteSpace(rawLine)) return null;
 
