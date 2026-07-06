@@ -103,7 +103,7 @@ namespace SpaceExpedition
                    new string('─', 100); // Generates a clean dividing underline
         }
 
-        // Validate the encoded name before adding to artifact object
+        // Validates the encoded name before adding to an instance of an Artifact
         private static bool IsValidEncodedName(string encodedName)
         {
             if (string.IsNullOrWhiteSpace(encodedName)) return false;

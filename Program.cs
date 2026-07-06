@@ -159,8 +159,8 @@
 
             do
             {
-                Console.WriteLine("Enter an Artifact decoded name to search for in the inventory:");
-                name = Console.ReadLine().Trim();
+                Console.WriteLine("Enter an Artifact full decoded name in uppercase to search for in the inventory:");
+                name = Console.ReadLine().Trim().ToUpper(); // Automatically made it uppercase regardless
 
                 if (string.IsNullOrWhiteSpace(name))
                 {
@@ -195,19 +195,16 @@
             }
 
             int mid = left + (right - left) / 2;
-
-            if (inventory[mid].DecodedName.CompareTo(target) == 0)
-            {
-                return mid;
-            }
-            else if (inventory[mid].DecodedName.CompareTo(target) < 0)
+            if (inventory[mid].DecodedName.CompareTo(target) < 0)
             {
                 return ImplementBinarySearch(ref artifactCount, ref inventory, target, mid + 1, right);
             }
-            else
+            else if(inventory[mid].DecodedName.CompareTo(target) > 0)
             {
                 return ImplementBinarySearch(ref artifactCount, ref inventory, target, left, mid - 1);
             }
+
+            return mid;
         }
 
         static void AddArtifact(ref int artifactCount, ref Artifact[] inventory)
