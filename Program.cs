@@ -214,23 +214,50 @@
             Console.WriteLine("│      LOG NEW ARCHAEOLOGICAL DISCOVERY  │");
             Console.WriteLine("└────────────────────────────────────────┘");
 
-            string encoded = GetNonEmptyInput("Enter Encoded Name (e.g., D3|X2|C6):");
-            string planet = GetNonEmptyInput("Enter Origin Planet/Celestial Body:");
-            string date = GetNonEmptyInput("Enter Discovery Date:");
-            string location = GetNonEmptyInput("Enter Secure Storage Location:");
-            string description = GetNonEmptyInput("Enter Artifact Description:");
+            // Get the Journey log filename from the user
+            string fileName = GetNonEmptyInput("Enter the journey log file name (e.g., artifact_name.txt):");
 
-            string simulatedRawLine = $"{encoded},{planet},{date},{location},{description}";
-            Artifact newArtifact = Artifact.ParseArtifact(simulatedRawLine);
+            if (!File.Exists(fileName))
+            {
+                Console.WriteLine($"\n[SYSTEM ERROR] Journey log '{fileName}' could not be found");
+                return;
+            }
+
+            string rawLine = "";
+            try
+            {
+                using (StreamReader sr = new StreamReader(fileName))
+                {
+                    rawLine = sr.ReadLine();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"\n[SYSTEM ERROR] Could not read journey log");
+                Console.WriteLine(e.Message);
+                return;
+            }
+
+            Artifact newArtifact = Artifact.ParseArtifact(rawLine);
 
             if (newArtifact != null)
             {
-                ImplementOrderedInsertion(ref artifactCount, ref inventory, newArtifact);
-                Console.WriteLine("\n[SUCCESS] Addition complete. Artifact logged alphabetically.");
+                // Check to see if the artifact allready exists in the inventory
+                int duplicateCheck = ImplementBinarySearch(ref artifactCount, ref inventory, newArtifact.DecodedName, 0, artifactCount - 1);
+
+                if (duplicateCheck >= 0)
+                {
+                    Console.WriteLine($"\n[ALERT] Artifact '{newArtifact.DecodedName}' already exists in the Galactic Vault. Addition aborted.");
+                }
+                else
+                {
+                    ImplementOrderedInsertion(ref artifactCount, ref inventory, newArtifact);
+                    Console.WriteLine($"\n[SUCCESS] Journey log translated. Artifact '{newArtifact.DecodedName}' logged alphabetically.");
+                }
             }
             else
             {
-                Console.WriteLine("\n[ERROR] Addition aborted due to the invalid entry above.");
+                Console.WriteLine("\n[ERROR] Addition aborted due to invalid formatting in the journey log.");
             }
         }
 
