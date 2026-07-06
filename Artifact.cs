@@ -103,7 +103,7 @@ namespace SpaceExpedition
                    new string('─', 100); // Generates a clean dividing underline
         }
 
-        // Validate the encoded name inputted by the user
+        // Validate the encoded name before adding to artifact object
         private static bool IsValidEncodedName(string encodedName)
         {
             if (string.IsNullOrWhiteSpace(encodedName)) return false;
@@ -121,8 +121,8 @@ namespace SpaceExpedition
                     // Token must be at least 2 characters
                     if (token.Length < 2) return false;
 
-                    // First character must be a letter
-                    if (!char.IsLetter(token[0])) return false;
+                    // First character must be a letter and uppercase
+                    if (!char.IsUpper(token, 0)) return false;
 
                     // Everything after the letter must be a number
                     string numericPart = token.Substring(1);

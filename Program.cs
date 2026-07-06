@@ -22,7 +22,9 @@
             bool running = true;
             while (running)
             {
-                Console.WriteLine("\n=== MAIN MENU ===");
+                Console.WriteLine("\n┌────────────────────────────────────────┐");
+                Console.WriteLine("│                MAIN MENU               │");
+                Console.WriteLine("└────────────────────────────────────────┘");
                 Console.WriteLine("1. Display Inventory");
                 Console.WriteLine("2. Search for an Artifact");
                 Console.WriteLine("3. Add New Discovered Artifact");
