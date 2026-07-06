@@ -132,7 +132,7 @@
                         }
                     }
                 }
-                Console.WriteLine($"[SUCCESS] Loaded {artifactCount} successfully.");
+                Console.WriteLine($"[SUCCESS] Loaded {artifactCount} artifacts successfully.");
             }
             catch (UnauthorizedAccessException e)
             {
