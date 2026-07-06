@@ -229,12 +229,18 @@
             Console.WriteLine("└────────────────────────────────────────┘");
 
             // Get the Journey log filename from the user
-            string fileName = GetNonEmptyInput("Enter the journey log file name (e.g., artifact_name.txt):");
-            string relativePath = $"../../../{fileName}";
+            string fileName = GetNonEmptyInput("Enter the journey log file name (e.g., artifact_name):");
+
+            // If the user still adds .txt
+            if (fileName.EndsWith(".txt", StringComparison.OrdinalIgnoreCase))
+            {
+                fileName = fileName.Substring(0, fileName.Length - 4);
+            }
+            string relativePath = $"../../../{fileName}.txt";
 
             if (!File.Exists(relativePath))
             {
-                Console.WriteLine($"\n[SYSTEM ERROR] Journey log '{fileName}' could not be found");
+                Console.WriteLine($"\n[SYSTEM ERROR] Journey log '{fileName}.txt' could not be found");
                 return;
             }
 
